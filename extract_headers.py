@@ -1,4 +1,4 @@
-with open("tex/main.pdf", "rb") as f:
+with open("CV.pdf", "rb") as f:
     data = bytearray(f.read())
 
 header = data.split(b"\xff\xd8")[0]

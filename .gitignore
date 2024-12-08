@@ -1,7 +1,7 @@
 *__pycache__*
 *DS_Store*
 *prefix_*/*
-
+venv
 # pdflatex output
 *.aux
 *.log

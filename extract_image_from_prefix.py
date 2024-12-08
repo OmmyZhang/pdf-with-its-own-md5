@@ -1,11 +1,12 @@
 import os
-import fire
 
 SOF = b"\xff\xd8"
 EOF = b"\xff\xd9"
 
-def extract(digit):
+for digit in range(1, 27):
+    print("digit:", digit)
     for i in range(16):
+        print(i)
         with open(f"prefix_{digit}/prefix_15_{i}.txt", "rb") as f:
             data = bytearray(f.read())
     
@@ -24,7 +25,4 @@ def extract(digit):
             val = "ABCDEF"[i - 10]
         with open(f"processed/{digit}/{val}.jpg", "wb") as f:
             f.write(data)
-
-if __name__ == "__main__":
-    fire.Fire(extract)
 

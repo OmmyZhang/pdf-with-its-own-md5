@@ -87,7 +87,7 @@ def pad_header(header):
     return header
 
 
-for i in range(32):
+for i in range(26):
     if not os.path.exists(f"{BASE_DIR}/prefix_{i+1}"):
         os.mkdir(f"{BASE_DIR}/prefix_{i+1}")
     j = 0
