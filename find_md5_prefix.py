@@ -1,6 +1,7 @@
 import hashlib
 from multiprocessing import Pool, Value
 import itertools
+import string
 
 PLACE_HOLDER = b'\\000P\\000D\\000F\\000K\\000W'
 SEP = b'\\000'
@@ -8,20 +9,13 @@ SEP = b'\\000'
 TARGET = 'c0ffee'
 PROCESS = 32
 
+CHARS = string.digits + string.ascii_uppercase + string.ascii_lowercase + "-_"
+
 with open('CV.pdf', 'rb') as f:
     content = f.read()
 
 sp1, sp2 = content.split(PLACE_HOLDER)
 md5_p1 = hashlib.md5(sp1)
-
-# number to string of 0-9, A-Z, a-z
-def number_to_string(num) -> bytes:
-    if num < 10:
-        return str(num).encode()
-    elif num < 36:
-        return chr(num + 55).encode()
-    else:
-        return chr(num + 61).encode()
 
 done = Value('b', False)
 
@@ -31,15 +25,15 @@ def check(i):
         return
     s = b''
     for t in range(5):
-        s += SEP + number_to_string(i % 62)
-        i = i // 62
+        s += SEP + CHARS[i % 64].encode()
+        i = i // 64
 
     md5_curr = md5_p1.copy()
     md5_curr.update(s)
     md5_curr.update(sp2)
     md5 = md5_curr.hexdigest()
     if md5.startswith(TARGET):
-        print(s)
+        print(s, md5)
         with done.get_lock():
             done.value = True
         return True
@@ -52,4 +46,3 @@ with Pool(processes=PROCESS) as pool:
         if result:
             pool.terminate()
             break
-    
